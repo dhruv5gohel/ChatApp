@@ -1,23 +1,25 @@
 import 'rsuite/dist/rsuite.min.css';
+import { Routes, Route } from "react-router-dom"
+import SignIn from './Pages/SignIn';
+import PublicRoute from './Components/PublicRoute';
+import PrivateRoute from './Components/PrivateRoute';
+import Home from './Pages/Home';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/signin" element={
+        <PublicRoute>
+          <SignIn />
+        </PublicRoute>
+      } />
+
+      <Route path="/" element={
+        <PrivateRoute>
+          <Home />
+        </PrivateRoute>
+      } />
+    </Routes>
   );
 }
 
