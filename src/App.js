@@ -4,6 +4,7 @@ import SignIn from './Pages/SignIn';
 import PublicRoute from './Components/PublicRoute';
 import PrivateRoute from './Components/PrivateRoute';
 import Home from './Pages/Home';
+import "./style/utility.css"
 
 function App() {
   return (

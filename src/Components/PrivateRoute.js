@@ -1,7 +1,7 @@
 import { Navigate } from "react-router";
 
 const PrivateRoute = ({ children, ...routeProps }) => {
-    const profile = true;
+    const profile = false;
 
     if(!profile){
         return <Navigate to="/signin" />
