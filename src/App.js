@@ -5,22 +5,26 @@ import PublicRoute from './Components/PublicRoute';
 import PrivateRoute from './Components/PrivateRoute';
 import Home from './Pages/Home';
 import "./style/utility.css"
+import { ProfileProvider } from './context/ProfileContext';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/signin" element={
-        <PublicRoute>
-          <SignIn />
-        </PublicRoute>
-      } />
+    <ProfileProvider>
 
-      <Route path="/" element={
-        <PrivateRoute>
-          <Home />
-        </PrivateRoute>
-      } />
-    </Routes>
+      <Routes>
+        <Route path="/signin" element={
+          <PublicRoute>
+            <SignIn />
+          </PublicRoute>
+        } />
+
+        <Route path="/" element={
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        } />
+      </Routes>
+    </ProfileProvider>
   );
 }
 
