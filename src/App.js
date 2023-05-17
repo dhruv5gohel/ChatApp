@@ -5,6 +5,7 @@ import PublicRoute from './Components/PublicRoute';
 import PrivateRoute from './Components/PrivateRoute';
 import Home from './Pages/Home';
 import "./style/utility.css"
+import "./style/style.css"
 import { ProfileProvider } from './context/ProfileContext';
 
 function App() {

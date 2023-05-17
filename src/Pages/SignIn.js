@@ -11,7 +11,6 @@ const SignIn = () => {
     const signInWithProvider = async (provider) => {
         try{
             const result = await signInWithPopup(auth, provider);
-            console.log(result)
 
             if(result._tokenResponse.isNewUser){   
                 await set(ref(database, "profiles/" + result.user.uid), {
@@ -42,7 +41,7 @@ const SignIn = () => {
                     <Col xs={24} md={12} mdOffset={6}>
                         <Panel>
                             <div className="text-center mt">
-                                <h2 className="text-center">Welcome To Chat App</h2>
+                            <h2 className="text-center">Welcome To Chat App</h2>
                                 <div className="mt-5">
                                     <Button color="green" appearance="primary" startIcon={<FaGoogle />} className="mlr-3" onClick={onGoogleSignIn}>
                                         Login with Google

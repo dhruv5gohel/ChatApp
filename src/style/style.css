@@ -1,0 +1,14 @@
+.hamburger{
+    margin: 8px 8px;
+    width: 240px;
+}
+
+.hamburger button{
+    font-size: 1.5rem;
+}
+
+@media screen and (max-width: 500px){
+    .hamburger{
+        width: 160px;
+    }
+}

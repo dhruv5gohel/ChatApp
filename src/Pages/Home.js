@@ -1,6 +1,10 @@
+import SideNavbar from "../Components/Sidebar/SideNavbar";
+
 const Home = () => {
     return(
-        <div>Home</div>
+        <>
+            <SideNavbar className="side-navbar"/>
+        </>
     );
 }
 
