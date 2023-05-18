@@ -7,6 +7,7 @@ import Home from './Pages/Home';
 import "./style/utility.css"
 import "./style/style.css"
 import { ProfileProvider } from './context/ProfileContext';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           </PrivateRoute>
         } />
       </Routes>
+      <ToastContainer position="top-center" />
     </ProfileProvider>
   );
 }

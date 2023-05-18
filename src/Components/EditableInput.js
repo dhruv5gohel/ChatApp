@@ -1,7 +1,7 @@
 import { AiFillEdit, AiOutlineClose, AiOutlineCheck } from "react-icons/ai"
 import { useState } from "react"
 import { Input, InputGroup } from "rsuite"
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const EditableInput = ({ initialValue, onSave, label=null, placeholder="Write your Value", emptyMsg="Input Cannot be empty", ...inputProps}) => {
     const [input, setInput] = useState(initialValue);
@@ -36,7 +36,6 @@ const EditableInput = ({ initialValue, onSave, label=null, placeholder="Write yo
         <InputGroup.Button startIcon={isEditable? <AiOutlineClose /> : <AiFillEdit />} onClick={onEditChange} />
         {isEditable && <InputGroup.Button startIcon={<AiOutlineCheck />} onClick={onSaveInput}/>}
       </InputGroup>
-      <ToastContainer />
     </div>
   )
 }

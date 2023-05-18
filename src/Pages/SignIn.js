@@ -4,7 +4,7 @@ import { FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from "fireb
 import { auth } from "../misc/firebase";
 import { database } from "../misc/firebase";
 import { ref, set } from "firebase/database";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 const SignIn = () => {
@@ -51,7 +51,6 @@ const SignIn = () => {
                                     </Button>
                                 </div>
                             </div>
-                            <ToastContainer position="top-center"/>
                         </Panel>
                     </Col>
                 </Row>

@@ -3,7 +3,7 @@ import { useProfile } from "../../context/ProfileContext";
 import EditableInput from "../EditableInput";
 import { ref, update } from "firebase/database";
 import { database } from "../../misc/firebase";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import ProviderBlock from "../ProviderBlock";
 
 const ControlDrawer = ({ openDrawer, handleDrawer, title, onSignOut }) => {
@@ -41,7 +41,6 @@ const ControlDrawer = ({ openDrawer, handleDrawer, title, onSignOut }) => {
                     <ProviderBlock/>
                 </Drawer.Body>
             </Drawer>
-            <ToastContainer />
         </>
     )
 }
