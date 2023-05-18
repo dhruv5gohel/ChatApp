@@ -13,3 +13,19 @@
 .mlr-3{
     margin: 0px 3px;
 }
+
+.d-none{
+    display: none;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.d-flex{
+    display: flex;
+}
+
+.justify-center{
+    justify-content: center;
+}

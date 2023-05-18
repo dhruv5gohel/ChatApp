@@ -4,6 +4,7 @@ import EditableInput from "../EditableInput";
 import { ref, update } from "firebase/database";
 import { database } from "../../misc/firebase";
 import { toast } from "react-toastify";
+import AvatarEditable from "../AvatarEditable"
 import ProviderBlock from "../ProviderBlock";
 
 const ControlDrawer = ({ openDrawer, handleDrawer, title, onSignOut }) => {
@@ -39,6 +40,7 @@ const ControlDrawer = ({ openDrawer, handleDrawer, title, onSignOut }) => {
                     <Divider />
                     <EditableInput initialValue={profile.name} onSave={onSave} name="Nickname" label={<h6>Nickname</h6>} />
                     <ProviderBlock/>
+                    <AvatarEditable />
                 </Drawer.Body>
             </Drawer>
         </>

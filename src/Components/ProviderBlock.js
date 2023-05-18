@@ -23,16 +23,16 @@ const ProviderBlock = () => {
     const unlinkProvider = async (provider) => {
         try{
             if(auth.currentUser.providerData.length === 1){
-                throw new Error("Ther must be one provider connected");
+                throw new Error("There must be one provider connected");
             }
 
             await unlink(auth.currentUser, provider);
 
-            toast.success("Logged out from ", provider);
+            toast.success(`Logged out from ${provider}`);
             updateIsConnected(provider, false)
         }
         catch(err){
-            toast.error(err);
+            toast.error(err.message);
         }
     }
 
@@ -40,7 +40,7 @@ const ProviderBlock = () => {
         try{
             await linkWithPopup(auth.currentUser, provider);
 
-            toast.success("Linked with ", provider.providerId);
+            toast.success(`Linked with ${provider.providerId}`);
             updateIsConnected(provider.providerId, true)
         }
         catch(err){
@@ -65,7 +65,7 @@ const ProviderBlock = () => {
     }
 
   return (
-    <div className="provider-block">
+    <div className="mt-5">
       <TagGroup>
       {isConnected["google.com"] &&
         <Tag closable color="green" onClose={unlinkGoogle}>
