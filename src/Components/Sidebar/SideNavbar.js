@@ -1,13 +1,15 @@
 import { Button, Sidenav, Nav } from "rsuite";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
-import { Dashboard } from "@rsuite/icons";
+import { AddOutline, Dashboard } from "@rsuite/icons";
 import ControlDrawer from "./ControlDrawer";
 import { auth } from "../../misc/firebase";
+import CreateRoomBtn from "../CreateRoomBtn";
 
 const SideNavbar = () => {
     const [expanded, setExpanded] = useState(false);
     const [openDrawer, setOpenDrawer] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
     const handleDrawer = () => {
         setOpenDrawer((openDrawer) => !openDrawer)
@@ -16,6 +18,10 @@ const SideNavbar = () => {
     const onSignOut = () => {
         auth.signOut();
         setOpenDrawer(false);
+    }
+
+    const handleModal = () => {
+        setOpenModal(p=> !p);
     }
 
     return (
@@ -29,6 +35,10 @@ const SideNavbar = () => {
                             DashBoard
                         </Nav.Item>
                         <ControlDrawer openDrawer={openDrawer} handleDrawer={handleDrawer} title="Profile" onSignOut={onSignOut}/>
+                        <Nav.Item icon={<AddOutline/>} onClick={handleModal}>
+                            Create Room
+                        </Nav.Item>
+                        <CreateRoomBtn openModal={openModal} handleModal={handleModal}/>
                     </Nav>
                 </Sidenav.Body>
             </Sidenav>
