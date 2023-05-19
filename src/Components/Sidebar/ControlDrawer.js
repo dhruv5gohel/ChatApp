@@ -36,11 +36,11 @@ const ControlDrawer = ({ openDrawer, handleDrawer, title, onSignOut }) => {
                     </Drawer.Actions>
                 </Drawer.Header>
                 <Drawer.Body>
-                    Hey, {profile.name}
+                    <AvatarEditable />
                     <Divider />
+                    <p className="text-center m-5 font-125">Hey, <span className="text-bold">{profile.name}</span></p>
                     <EditableInput initialValue={profile.name} onSave={onSave} name="Nickname" label={<h6>Nickname</h6>} />
                     <ProviderBlock/>
-                    <AvatarEditable />
                 </Drawer.Body>
             </Drawer>
         </>

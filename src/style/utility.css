@@ -6,6 +6,18 @@
     margin-top: 14rem;
 }
 
+.text-bold{
+    font-weight: bold;
+}
+
+.font-125{
+    font-size: 1.25rem;
+}
+
+.m-5{
+    margin: 15px 0px;
+}
+
 .mt-5{
     margin-top: 15px;
 }
