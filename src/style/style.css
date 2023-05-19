@@ -16,3 +16,15 @@
 .provider-btn{
     margin: 5px 0px;
 }
+
+.profile-avatar{
+    width: 125px;
+    height: 125px;
+    font-size: 3.5rem;
+
+}
+
+.profile-avatar img{
+    height: 100% !important;
+    width: 100% !important;
+}
