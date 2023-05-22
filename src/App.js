@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import SignIn from './Pages/SignIn';
 import PublicRoute from './Components/PublicRoute';
 import PrivateRoute from './Components/PrivateRoute';
-import Home from './Pages/Home';
+import Home from './Pages/Home/Home';
 import "./style/utility.css"
 import "./style/style.css"
 import { ProfileProvider } from './context/ProfileContext';
@@ -13,20 +13,21 @@ function App() {
   return (
     <ProfileProvider>
 
-      <Routes>
-        <Route path="/signin" element={
-          <PublicRoute>
-            <SignIn />
-          </PublicRoute>
-        } />
+        <Routes>
+          <Route exact path="/signin" element={
+            <PublicRoute>
+              <SignIn />
+            </PublicRoute>
+          } />
 
-        <Route path="/" element={
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute>
-        } />
-      </Routes>
-      <ToastContainer position="top-center" />
+          <Route exact path="*" element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          } />
+
+        </Routes>
+        <ToastContainer position="top-center" />
     </ProfileProvider>
   );
 }

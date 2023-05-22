@@ -1,13 +1,14 @@
-import { Button, Sidenav, Nav } from "rsuite";
+import { Button, Sidenav, Nav, Divider } from "rsuite";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
 import { AddOutline, Dashboard } from "@rsuite/icons";
 import ControlDrawer from "./ControlDrawer";
 import { auth } from "../../misc/firebase";
 import CreateRoomBtn from "../CreateRoomBtn";
+import RoomLists from "../Room/RoomLists";
 
 const SideNavbar = () => {
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(true);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [openModal, setOpenModal] = useState(false);
 
@@ -25,20 +26,22 @@ const SideNavbar = () => {
     }
 
     return (
-        <div className="hamburger">
-            <Button startIcon={<GiHamburgerMenu />} onClick={() => setExpanded((expanded) => !expanded)} />
+        <div>
+            {/* <Button startIcon={<GiHamburgerMenu />} onClick={() => setExpanded((expanded) => !expanded)} /> */}
 
             <Sidenav expanded={expanded}>
                 <Sidenav.Body>
                     <Nav>
-                        <Nav.Item icon={<Dashboard />} onClick={handleDrawer}>
+                        <Nav.Item icon={<Dashboard />} onClick={handleDrawer} className="dashboard-btn">
                             DashBoard
                         </Nav.Item>
                         <ControlDrawer openDrawer={openDrawer} handleDrawer={handleDrawer} title="Profile" onSignOut={onSignOut}/>
-                        <Nav.Item icon={<AddOutline/>} onClick={handleModal}>
+                        <Nav.Item icon={<AddOutline/>} onClick={handleModal} className="dashboard-btn">
                             Create Room
                         </Nav.Item>
                         <CreateRoomBtn openModal={openModal} handleModal={handleModal}/>
+                        <Divider>Conversations</Divider>
+                        <RoomLists />
                     </Nav>
                 </Sidenav.Body>
             </Sidenav>
