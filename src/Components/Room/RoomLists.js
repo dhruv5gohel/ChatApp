@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 const RoomLists = () => {
   const rooms = useRooms();
-  console.log(rooms)
 
   return (
     <Nav reversed>

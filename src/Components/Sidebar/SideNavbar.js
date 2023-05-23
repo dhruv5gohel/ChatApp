@@ -31,7 +31,7 @@ const SideNavbar = () => {
 
             <Sidenav expanded={expanded}>
                 <Sidenav.Body>
-                    <Nav>
+                    <Nav className="hv-100">
                         <Nav.Item icon={<Dashboard />} onClick={handleDrawer} className="dashboard-btn">
                             DashBoard
                         </Nav.Item>
