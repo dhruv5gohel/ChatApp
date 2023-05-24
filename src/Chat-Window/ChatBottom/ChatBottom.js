@@ -1,6 +1,6 @@
 const ChatBottom = () => {
   return (
-    <div className="chat-bottom">
+    <div>
       ChatBottom
     </div>
   )

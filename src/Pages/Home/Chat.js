@@ -4,6 +4,7 @@ import ChatMessages from "../../Chat-Window/ChatMessages/ChatMessages"
 import ChatTop from "../../Chat-Window/ChatTop/ChatTop"
 import { useRooms } from "../../context/RoomContext"
 import { Loader } from "rsuite"
+import { CurrentRoomProvider } from "../../context/CurrentRoom.context"
 
 const Chat = () => {
   const { chatId } = useParams();
@@ -20,20 +21,26 @@ const Chat = () => {
     return <h4 className="text-center mt">Room with Id: {chatId} not found</h4>
   }
 
+  const { name, description } = currentRoom;
+
+  const currentRoomData = {
+    name, description
+  }
+
   return (
-    <>
-      <div>
+    <CurrentRoomProvider data={currentRoomData}>
+      <div className="chat-top">
         <ChatTop />
       </div>
 
-      <div>
+      <div className="chat-middle">
         <ChatMessages />
       </div>
 
-      <div>
+      <div className="chat-bottom">
         <ChatBottom />
       </div>
-    </>
+    </CurrentRoomProvider>
   )
 }
 

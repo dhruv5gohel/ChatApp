@@ -1,6 +1,6 @@
 const ChatMessages = () => {
   return (
-    <div className="chat-middle">
+    <div>
       Chat Messages
     </div>
   )
