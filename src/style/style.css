@@ -55,10 +55,8 @@
     justify-content: center;
 }
 
-
-
 .chat-top{
-    height: 75px;
+    height: 60px;
 }
 
 .chat-bottom{
@@ -66,5 +64,23 @@
 }
 
 .chat-middle{
-    height: calc(100vh - 75px - 65px);
+    height: calc(100vh - 60px - 65px);
+}
+
+.chat-top-main{
+    margin: 0;
+    padding: 19px 0px;
+    border-radius: 0 !important;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.rs-col{
+    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.room-avatar-top{
+    margin: -9px 0px;
 }
