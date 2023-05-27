@@ -23,7 +23,7 @@ const Home = () => {
 
                     <Routes>
                         <Route exact path="/chat/:chatId" element={
-                            <Col xs={24} md={18} className="h-100">
+                            <Col xs={24} md={canRenderSidebar ? 18 : 24} className="h-100">
                                 <Chat />
                             </Col>
                         } />
