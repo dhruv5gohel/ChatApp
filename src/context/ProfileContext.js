@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, database } from "../misc/firebase";
-import { off, onValue, ref } from "firebase/database";
+import { off, onValue, ref, serverTimestamp } from "firebase/database";
 
 const ProfileContext = createContext();
 
@@ -22,6 +22,7 @@ export const ProfileProvider = ({ children }) => {
                         email,
                         name,
                         avatar,
+                        createdAt: serverTimestamp()
                     }
 
                     setProfile(data);

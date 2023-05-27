@@ -1,7 +1,7 @@
 const ChatMessages = () => {
   return (
     <div>
-      Chat Messages
+      Chat MEssages
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { Button, Modal } from "rsuite"
 import { useCurrentRoom } from "../../context/CurrentRoom.context";
+import { memo } from "react";
 
 const ChatTopModal = ({ name, isOpen, setIsOpen }) => {
     const desc = useCurrentRoom(v => v.description);
@@ -25,4 +26,4 @@ const ChatTopModal = ({ name, isOpen, setIsOpen }) => {
   )
 }
 
-export default ChatTopModal
+export default memo(ChatTopModal)
