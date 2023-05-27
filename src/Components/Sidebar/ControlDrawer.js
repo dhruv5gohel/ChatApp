@@ -6,21 +6,21 @@ import { database } from "../../misc/firebase";
 import { toast } from "react-toastify";
 import AvatarEditable from "../AvatarEditable"
 import ProviderBlock from "../ProviderBlock";
+import { getUserUpdates } from "../../misc/helpers";
 
 const ControlDrawer = ({ openDrawer, handleDrawer, title, onSignOut }) => {
     const { profile } = useProfile();
 
     const onSave = async (newData) => {
-        console.log(newData)
 
         try {
+            const updates = await getUserUpdates(profile.uid, "name", newData, database);
 
-            await update(ref(database, `/profiles/${profile.uid}`), {
-                name: newData
-            })
+            await update(ref(database), updates);
         }
         catch (err) {
-            toast.error("Some Error Occured", err);
+            toast.error(err);
+            console.log(err)
         }
     }
 
