@@ -43,7 +43,6 @@ const ChatBottom = () => {
     const updates = {};
 
     const messageId = push(ref(database, "messages")).key;
-    console.log(messageId)
 
     updates[`/messages/${messageId}`] = msgData;
     updates[`/rooms/${chatId}/lastMessage`] = {
@@ -65,7 +64,7 @@ const ChatBottom = () => {
   };
 
   const onKeyDown = (ev) => {
-    if(ev.ketCode === 13){
+    if(ev.keyCode === 13){
       ev.preventDefault();
       onSendClick();
     }
@@ -73,9 +72,9 @@ const ChatBottom = () => {
 
   return (
     <>   
-      <InputGroup>
+      <InputGroup onKeyDown={onKeyDown}>
         <Input placeholder="Enter your message here..." value={input} onChange={onInputChange}/>
-        <InputGroup.Button color="green" appearance="primary" onClick={onSendClick} disabled={isLoading} onKeyDown={onKeyDown}>
+        <InputGroup.Button color="green" appearance="primary" onClick={onSendClick} disabled={isLoading}>
             <Icon as={AiOutlineSend}/>
         </InputGroup.Button>
       </InputGroup>
