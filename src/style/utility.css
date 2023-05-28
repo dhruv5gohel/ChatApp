@@ -6,6 +6,10 @@
     margin-top: 14rem;
 }
 
+.mb-5{
+    margin-bottom: 5px;
+}
+
 .text-bold{
     font-weight: bold;
 }
@@ -52,4 +56,20 @@
 
 .justify-between{
     justify-content: space-between;
+}
+
+.p-10{
+    padding: 10px;
+}
+
+.align-center{
+    align-items: center;
+}
+
+.flex-column{
+    flex-direction: column;
+}
+
+.text-right{
+    text-align: right;
 }
