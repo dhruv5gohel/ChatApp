@@ -19,7 +19,7 @@ const ChatItem = ({ message }) => {
     return (
         <li className="p-10 mb-5">
             <div className="d-flex align-center mb-5 justify-between">
-                <div className="d-flex align-center flex-column" style={{ background: "#e6e6e6", padding: "3px 5px", borderRadius: "5px", height: getHeight(childRef.current) > getHeight(parentRef.current) ? `${getHeight(childRef.current)}px` : "auto"}} ref={parentRef}>
+                <div className="d-flex align-center flex-column" style={{ background: "#f6f6f6", padding: "3px 5px", borderRadius: "5px", height: getHeight(childRef.current) > getHeight(parentRef.current) ? `${getHeight(childRef.current)}px` : "auto"}} ref={parentRef}>
                     <ProfileAvatar src={author.avatar} alt={author.name} />
                     <ProfileModalBtn profile={author}/>
                 </div>

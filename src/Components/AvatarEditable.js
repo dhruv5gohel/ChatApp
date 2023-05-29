@@ -7,6 +7,7 @@ import { database, storage } from "../misc/firebase";
 import { useProfile } from "../context/ProfileContext";
 import { getDownloadURL, uploadBytes, ref as sRef } from "firebase/storage";
 import ProfileAvatar from "./ProfileAvatar";
+import { getUserUpdates } from "../misc/helpers";
 
 const supportFileTypes = ".png, .jpeg, .jpg";
 const acceptFileTypes = ["image/png", "image/jpeg", "image/pjpeg"];
@@ -63,9 +64,7 @@ const AvatarEditable = () => {
 
             const downloadUrl = await getDownloadURL(storageRef);
 
-            await update(ref(database, `/profiles/${profile.uid}`), {
-                avatar: downloadUrl,
-            });
+            await getUserUpdates(profile.uid, "avatar", downloadUrl, database);
             
             setIsLoading(false)
             toast.success("Avatar Updated");

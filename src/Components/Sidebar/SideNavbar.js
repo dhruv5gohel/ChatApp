@@ -3,9 +3,11 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
 import { AddOutline, Dashboard } from "@rsuite/icons";
 import ControlDrawer from "./ControlDrawer";
-import { auth } from "../../misc/firebase";
+import { auth, database } from "../../misc/firebase";
 import CreateRoomBtn from "../CreateRoomBtn";
 import RoomLists from "../Room/RoomLists";
+import { ref, set } from "firebase/database";
+import { isOfflineForDatabase } from "../../context/ProfileContext";
 
 const SideNavbar = () => {
     const [expanded, setExpanded] = useState(true);
@@ -17,8 +19,10 @@ const SideNavbar = () => {
     }
 
     const onSignOut = () => {
-        auth.signOut();
-        setOpenDrawer(false);
+        set(ref(database, `/status/${auth.currentUser.uid}`), isOfflineForDatabase).then(()=>{
+            auth.signOut();
+            setOpenDrawer(false);
+        })
     }
 
     const handleModal = () => {

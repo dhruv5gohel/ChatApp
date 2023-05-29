@@ -1,8 +1,18 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, database } from "../misc/firebase";
-import { off, onValue, ref, serverTimestamp } from "firebase/database";
+import { off, onDisconnect, onValue, ref, serverTimestamp, set } from "firebase/database";
 
 const ProfileContext = createContext();
+
+export const isOfflineForDatabase = {
+    state: "offline",
+    lastChanged: serverTimestamp(),
+};
+
+const isOnlineForDatabase = {
+    state: "online",
+    lastChanged: serverTimestamp(),
+}
 
 export const ProfileProvider = ({ children }) => {
     const [profile, setProfile] = useState(null);
@@ -10,10 +20,13 @@ export const ProfileProvider = ({ children }) => {
 
     useEffect(()=>{
         let profileRef;
+        let profileStatusRef;
 
         const authUnsub = auth.onAuthStateChanged(authObj => {
             if(authObj){
                 profileRef = ref(database, `profiles/${authObj.uid}`);
+                profileStatusRef = ref(database, `status/${authObj.uid}`);
+
                 onValue(profileRef, (snapshot)=>{
                     const { email, name, avatar } = snapshot.val();
 
@@ -28,6 +41,16 @@ export const ProfileProvider = ({ children }) => {
                     setProfile(data);
                     setLoading(false);
                 })
+
+                onValue(ref(database, ".info/connected"), snap => {
+                    if(!!snap.val() === false){
+                        return;
+                    }
+
+                    onDisconnect(profileStatusRef).set(isOfflineForDatabase).then(()=>{
+                        set(profileStatusRef, isOnlineForDatabase)
+                    })
+                })
             }
             else{
                 setProfile(null);
@@ -35,6 +58,12 @@ export const ProfileProvider = ({ children }) => {
                 if(profileRef){
                     off(profileRef);
                 }
+
+                if(profileStatusRef){
+                    off(profileStatusRef);
+                }
+
+                off(ref(database, ".info/connected"))
                 setLoading(false);
             }
         })
@@ -44,6 +73,10 @@ export const ProfileProvider = ({ children }) => {
 
             if(profileRef){
                 off(profileRef);
+            }
+
+            if(profileStatusRef){
+                off(profileStatusRef)
             }
         }
     },[])
