@@ -7,8 +7,8 @@ import { FacebookAuthProvider, GoogleAuthProvider, linkWithPopup, unlink } from 
 
 const ProviderBlock = () => {
     const [isConnected, setIsConnected] = useState({
-        "google.com": auth.currentUser.providerData.some(data => data.providerId === "google.com"),
-        "facebook.com": auth.currentUser.providerData.some(data => data.providerId === "facebook.com")
+        "google.com": auth.currentUser ? auth.currentUser.providerData.some(data => data.providerId === "google.com") : false,
+        "facebook.com": auth.currentUser ? auth.currentUser.providerData.some(data => data.providerId === "facebook.com") : false
     })
 
     const updateIsConnected = (provider, value) => {
