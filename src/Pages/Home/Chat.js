@@ -5,6 +5,8 @@ import ChatTop from "../../Chat-Window/ChatTop/ChatTop"
 import { useRooms } from "../../context/RoomContext"
 import { Loader } from "rsuite"
 import { CurrentRoomProvider } from "../../context/CurrentRoom.context"
+import { transformToArrayWithoutId } from "../../misc/helpers"
+import { auth } from "../../misc/firebase"
 
 const Chat = () => {
   const { chatId } = useParams();
@@ -22,9 +24,14 @@ const Chat = () => {
   }
 
   const { name, description } = currentRoom;
+  const admins = transformToArrayWithoutId(currentRoom.admins);
+  const isAdmin = admins.includes(auth.currentUser.uid)
 
   const currentRoomData = {
-    name, description
+    name, 
+    description,
+    admins,
+    isAdmin
   }
 
   return (

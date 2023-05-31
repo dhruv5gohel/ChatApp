@@ -28,3 +28,7 @@ export async function getUserUpdates(userId, keyToUpdate, value, db) {
     return updates;
 
 }
+
+export function transformToArrayWithoutId(snap) {
+    return snap ? Object.keys(snap) : []
+}

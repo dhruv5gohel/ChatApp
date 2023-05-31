@@ -24,6 +24,7 @@ const ChatTop = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [editIsOpen, setEditIsOpen] = useState(false);
   const isMobile = useMediaQuery("(min-width: 992px)");
+  const isAdmin = useCurrentRoom(v => v.isAdmin)
 
   return (
     <>
@@ -38,9 +39,11 @@ const ChatTop = () => {
             <Button block style={{ width: "100%" }} className="chat-top-main" color="red" appearance="primary" startIcon={<RoomAvatar name={name} />} onClick={() => { setIsOpen(p => !p) }}>
               <span style={{ fontSize: "1.5rem", fontWeight: "bolder", marginLeft: "10px" }}>{name}</span>
             </Button>
+            {isAdmin &&
             <Dropdown renderToggle={renderButton} placement="leftBottom">
               <Dropdown.Item onClick={()=>setEditIsOpen(p => !p)}>Edit Room</Dropdown.Item>
             </Dropdown>
+            }
           </div>
         </div>
       </div>

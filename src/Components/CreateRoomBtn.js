@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useRef, useState } from "react"
 import { toast } from "react-toastify";
 import { Button, Form, Input, Modal, Schema } from "rsuite"
-import { database } from "../misc/firebase";
+import { auth, database } from "../misc/firebase";
 import {  push, ref, serverTimestamp, set } from "firebase/database";
 
 const Textarea = forwardRef((props, ref) => <Input {...props} as="textarea" ref={ref} />);
@@ -37,7 +37,10 @@ const CreateRoomBtn = ({ openModal, handleModal }) => {
             console.log(data)
             const temp = await set(ref(database, `rooms/${data.key}`),{
                 ...formVal,
-                createdAt: serverTimestamp()
+                createdAt: serverTimestamp(),
+                admins: {
+                    [auth.currentUser.uid] : true,
+                }
             });
             console.log(temp)
 
