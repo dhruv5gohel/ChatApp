@@ -1,4 +1,3 @@
-import { AiFillHeart } from "react-icons/ai"
 import { Badge, IconButton, Tooltip, Whisper } from "rsuite"
 
 const BadgeCond = ({ condition, children }) => {
@@ -7,10 +6,10 @@ const BadgeCond = ({ condition, children }) => {
 
 const IconBtnControl = ({ isVisible, iconName, badgeContent, toolTipMsg,  ...props }) => {
   return (
-    <div style={{visibility: isVisible ? "visible" : "hidden"}}>
+    <div style={{visibility: isVisible ? "visible" : "hidden"}} className="mlr-10">
         <BadgeCond condition={badgeContent}>
             <Whisper placement="bottom" trigger="hover" controlId="control-id-hover" speaker={<Tooltip>{toolTipMsg}</Tooltip>}>
-                <IconButton appearance="primary" {...props} circle size="xs" icon={<AiFillHeart/>} />
+                <IconButton appearance="primary" {...props} circle size="xs" icon={iconName} />
             </Whisper>
         </BadgeCond>
     </div>

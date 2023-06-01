@@ -6,6 +6,10 @@
     margin-top: 14rem;
 }
 
+.mlr-10{
+    margin: 0px 10px;
+}
+
 .mb-5{
     margin-bottom: 5px;
 }
@@ -72,12 +76,4 @@
 
 .text-right{
     text-align: right;
-}
-
-.visible{
-    visibility: visible;
-}
-
-.hidden{
-    visibility: hidden;
 }

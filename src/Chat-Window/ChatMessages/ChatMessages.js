@@ -1,4 +1,4 @@
-import { equalTo, off, onValue, orderByChild, query, ref, runTransaction } from "firebase/database";
+import { equalTo, off, onValue, orderByChild, query, ref, runTransaction, update } from "firebase/database";
 import { useEffect } from "react";
 import { useState } from "react"
 import { useParams } from "react-router";
@@ -75,11 +75,41 @@ const ChatMessages = () => {
 
   }
 
+  const handleDelete = async (msgId) => {
+    if( !window.confirm("Do you want to delete this message")){
+      return
+    }
+
+    const updates = {}
+
+    const isLast = messages[messages.length - 1].id === msgId
+
+    updates[`/messages/${msgId}`] = null
+
+    if(isLast && messages.length > 1){
+      updates[`/rooms/${chatId}/lastMessage`] = {
+        ...messages[messages.length - 2],
+        messageId: messages[messages.length - 2].id
+      }
+    }
+
+    if(isLast && messages.length === 1){
+      updates[`/rooms/${chatId}/lastMessage`] = null
+    }
+
+    try{
+      await update(ref(database), updates)
+    }
+    catch (err){
+      toast.error(err.message);
+    }
+  }
+
   return (
     <ul className="msg-list custom-scroll">
       {isChatEmpty && <li>No messages yet</li>}
       {canShowMessages && 
-        messages.map(msg => <ChatItem key={msg.id} message={msg} handleAdmin={handleAdmin} handleLike={handleLike}/>)
+        messages.map(msg => <ChatItem key={msg.id} message={msg} handleAdmin={handleAdmin} handleLike={handleLike} handleDelete={handleDelete}/>)
       }
     </ul>
   )
