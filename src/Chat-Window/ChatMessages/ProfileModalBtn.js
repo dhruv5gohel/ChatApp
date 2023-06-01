@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Button, Modal } from "rsuite"
 import ProfileAvatar from "../../Components/ProfileAvatar";
 
-const ProfileModalBtn = ({ profile }) => {
+const ProfileModalBtn = ({ profile, children }) => {
     const { createdAt, name, avatar } = profile
     const [isOpen, setIsOpen] = useState(false);
 
@@ -20,6 +20,7 @@ const ProfileModalBtn = ({ profile }) => {
                 </Modal.Body>
 
                 <Modal.Footer>
+                    {children}
                     <Button block onClick={()=>setIsOpen(p => !p)}>Close</Button>
                 </Modal.Footer>
             </Modal>
