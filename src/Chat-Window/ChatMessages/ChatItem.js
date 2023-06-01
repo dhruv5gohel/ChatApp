@@ -8,6 +8,7 @@ import { Button, Tooltip, Whisper } from "rsuite";
 import { useCurrentRoom } from "../../context/CurrentRoom.context";
 import { memo } from "react";
 import { auth } from "../../misc/firebase";
+import { useHover } from "@uidotdev/usehooks";
 
 const getColor = (presence) => {
     if (!presence) {
@@ -31,8 +32,7 @@ const getText = (presence) => {
 
 const ChatItem = ({ message, handleAdmin }) => {
     const { author, createdAt, text } = message;
-    const parentRef = useRef();
-    const childRef = useRef()
+    const parentRef = useRef()
     const [width, setWidth] = useState(() => getWidth(parentRef.current));
     const presence = usePresence(author.uid)
 
@@ -42,6 +42,8 @@ const ChatItem = ({ message, handleAdmin }) => {
     const isMsgAuthorAdmin = admins.includes(author.uid)
     const isAuthor = auth.currentUser.uid === author.uid
     const canGrantAdmin = isAdmin && !isAuthor
+
+    const [childRef, isHovered] = useHover()
 
     useEffect(() => {
         let w = getWidth(parentRef.current);
@@ -65,7 +67,7 @@ const ChatItem = ({ message, handleAdmin }) => {
                         }
                     </ProfileModalBtn>
                 </div>
-                <div className="d-flex flex-column justify-between msg-time-chat" style={{ width: `calc(100% - ${width}px - 15px)`, height: getHeight(childRef.current) > getHeight(parentRef.current) ? "auto" : `${getHeight(parentRef.current)}px` }} ref={childRef}>
+                <div className="d-flex flex-column justify-between msg-time-chat" style={{ width: `calc(100% - ${width}px - 15px)`, height: getHeight(childRef.current) > getHeight(parentRef.current) ? "auto" : `${getHeight(parentRef.current)}px`, background: isHovered ? "#f6f6f6" : "" }} ref={childRef}>
                     <span style={{ wordBreak: "break-all" }}>{text}</span>
                     <span className="text-right">
                         <TimeAgo date={new Date(createdAt)} />
