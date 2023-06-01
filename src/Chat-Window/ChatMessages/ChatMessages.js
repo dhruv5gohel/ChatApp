@@ -2,7 +2,7 @@ import { equalTo, off, onValue, orderByChild, query, ref, runTransaction } from 
 import { useEffect } from "react";
 import { useState } from "react"
 import { useParams } from "react-router";
-import { database } from "../../misc/firebase";
+import { auth, database } from "../../misc/firebase";
 import { transformToArray } from "../../misc/helpers";
 import ChatItem from "./ChatItem";
 import { toast } from "react-toastify";
@@ -50,11 +50,36 @@ const ChatMessages = () => {
     toast.success(alertMsg)
   }
 
+  const handleLike = async (msgId) => {
+    const msgRef = ref(database, `/messages/${msgId}`)
+    
+    await runTransaction(msgRef, msg => {
+      if(msg){
+        if(msg.likes && msg.likes[auth.currentUser.uid]){
+          msg.likeCount -= 1
+          msg.likes[auth.currentUser.uid] = null
+        }
+        else{
+          msg.likeCount += 1
+
+          if(!msg.likes){
+            msg.likes = {}
+          }
+
+          msg.likes[auth.currentUser.uid] = true
+        }
+      }
+
+      return msg
+    })
+
+  }
+
   return (
     <ul className="msg-list custom-scroll">
       {isChatEmpty && <li>No messages yet</li>}
       {canShowMessages && 
-        messages.map(msg => <ChatItem key={msg.id} message={msg} handleAdmin={handleAdmin}/>)
+        messages.map(msg => <ChatItem key={msg.id} message={msg} handleAdmin={handleAdmin} handleLike={handleLike}/>)
       }
     </ul>
   )

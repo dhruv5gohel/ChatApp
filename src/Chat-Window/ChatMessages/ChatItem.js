@@ -9,6 +9,7 @@ import { useCurrentRoom } from "../../context/CurrentRoom.context";
 import { memo } from "react";
 import { auth } from "../../misc/firebase";
 import { useHover } from "@uidotdev/usehooks";
+import IconBtnControl from "./IconBtnControl";
 
 const getColor = (presence) => {
     if (!presence) {
@@ -30,8 +31,8 @@ const getText = (presence) => {
     return presence.state === "online" ? "Online" : `Last online ${new Date(presence.lastChanged).toLocaleDateString()}`
 }
 
-const ChatItem = ({ message, handleAdmin }) => {
-    const { author, createdAt, text } = message;
+const ChatItem = ({ message, handleAdmin, handleLike }) => {
+    const { author, createdAt, text, likeCount, likes } = message;
     const parentRef = useRef()
     const [width, setWidth] = useState(() => getWidth(parentRef.current));
     const presence = usePresence(author.uid)
@@ -44,6 +45,8 @@ const ChatItem = ({ message, handleAdmin }) => {
     const canGrantAdmin = isAdmin && !isAuthor
 
     const [childRef, isHovered] = useHover()
+
+    const isLiked = likes && Object.keys(likes).includes(auth.currentUser.uid)
 
     useEffect(() => {
         let w = getWidth(parentRef.current);
@@ -68,7 +71,10 @@ const ChatItem = ({ message, handleAdmin }) => {
                     </ProfileModalBtn>
                 </div>
                 <div className="d-flex flex-column justify-between msg-time-chat" style={{ width: `calc(100% - ${width}px - 15px)`, height: getHeight(childRef.current) > getHeight(parentRef.current) ? "auto" : `${getHeight(parentRef.current)}px`, background: isHovered ? "#f6f6f6" : "" }} ref={childRef}>
+                    <div className="d-flex justify-between">
                     <span style={{ wordBreak: "break-all" }}>{text}</span>
+                    <IconBtnControl {...(isLiked) ? {color: "red"} : {appearance: "ghost", color:"red" }} isVisible iconName="heart" badgeContent={likeCount} onClick={()=>handleLike(message.id)} toolTipMsg={isLiked ? "Unlike" : "Like"}/>
+                    </div>
                     <span className="text-right">
                         <TimeAgo date={new Date(createdAt)} />
                     </span>

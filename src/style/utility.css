@@ -73,3 +73,11 @@
 .text-right{
     text-align: right;
 }
+
+.visible{
+    visibility: visible;
+}
+
+.hidden{
+    visibility: hidden;
+}

@@ -18,7 +18,8 @@ function assembleMessage(profile, chatId){
       createdAt: profile.createdAt,
       ...(profile.avatar ? {avatar: profile.avatar} : {})
     },
-    createdAt: serverTimestamp()
+    createdAt: serverTimestamp(),
+    likeCount: 0
   };
 }
 
