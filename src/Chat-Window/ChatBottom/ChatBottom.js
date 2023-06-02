@@ -9,6 +9,7 @@ import { useProfile } from "../../context/ProfileContext";
 import { database } from "../../misc/firebase";
 import { toast } from "react-toastify";
 import AttachFileModal from "./AttachFileModal";
+import AttachAudiBtn from "./AttachAudiBtn";
 
 function assembleMessage(profile, chatId) {
   return {
@@ -100,6 +101,7 @@ const ChatBottom = () => {
     <>
       <InputGroup onKeyDown={onKeyDown}>
         <AttachFileModal afterUploadFilesToStorage={afterUploadFilesToStorage} />
+        <AttachAudiBtn afterUploadFilesToStorage={afterUploadFilesToStorage} />
         <Input placeholder="Enter your message here..." value={input} onChange={onInputChange} />
         <InputGroup.Button color="green" appearance="primary" onClick={onSendClick} disabled={isLoading}>
           <Icon as={AiOutlineSend} />

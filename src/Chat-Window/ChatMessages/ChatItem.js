@@ -42,8 +42,16 @@ const renderFileMessage = (file) => {
         )
     }
 
+    if(file.contentType.includes("audio")){
+        return (
+            <audio controls>
+                <source src={file.url}/>
+            </audio>
+        )
+    }
+
     return (
-        <a href={file.url}>Download file {file.name}</a>
+        <a href={file.url} target="_blank">Download file {file.name}</a>
     )
 }
 

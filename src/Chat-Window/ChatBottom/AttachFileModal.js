@@ -25,7 +25,7 @@ const AttachFileModal = ({ afterUploadFilesToStorage }) => {
         setIsLoading(true)
         try{
             const uploadPromises = fileList.map(file => {
-                return uploadBytes(ref(storage, `/chat/${chatId}/${Date().now + file.name}`), file.blobFile, {cacheControl: `public, max-age = ${3600 * 24 * 3}`})
+                return uploadBytes(ref(storage, `/chat/${chatId}/${Date.now() + file.name}`), file.blobFile, {cacheControl: `public, max-age = ${3600 * 24 * 3}`})
             })
 
             const uploadSnapshots = await Promise.all(uploadPromises)
