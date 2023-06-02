@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react"
 import { useParams } from "react-router";
 import { auth, database, storage } from "../../misc/firebase";
-import { transformToArray } from "../../misc/helpers";
+import { groupBy, transformToArray } from "../../misc/helpers";
 import ChatItem from "./ChatItem";
 import { toast } from "react-toastify";
 import { deleteObject, ref as storeRef } from "firebase/storage";
@@ -15,7 +15,7 @@ const ChatMessages = () => {
   const isChatEmpty = messages && messages.length === 0;
   const canShowMessages = messages && messages.length > 0;
 
-  useEffect(()=>{
+  useEffect(() => {
     const msgRef = ref(database, "/messages")
 
     onValue(query(msgRef, orderByChild("roomId"), equalTo(chatId)), snap => {
@@ -27,7 +27,7 @@ const ChatMessages = () => {
     return () => {
       off(msgRef);
     }
-  },[chatId]);
+  }, [chatId]);
 
   const handleAdmin = async (uid) => {
     const adminRef = ref(database, `/rooms/${chatId}/admins`);
@@ -35,12 +35,12 @@ const ChatMessages = () => {
     let alertMsg
 
     await runTransaction(adminRef, admin => {
-      if(admin){
-        if(admin[uid]){
+      if (admin) {
+        if (admin[uid]) {
           admin[uid] = null
           alertMsg = "Admin Permission removed successfully"
         }
-        else{
+        else {
           admin[uid] = true
           alertMsg = "Admin Permission granted successfully"
         }
@@ -53,17 +53,17 @@ const ChatMessages = () => {
 
   const handleLike = async (msgId) => {
     const msgRef = ref(database, `/messages/${msgId}`)
-    
+
     await runTransaction(msgRef, msg => {
-      if(msg){
-        if(msg.likes && msg.likes[auth.currentUser.uid]){
+      if (msg) {
+        if (msg.likes && msg.likes[auth.currentUser.uid]) {
           msg.likeCount -= 1
           msg.likes[auth.currentUser.uid] = null
         }
-        else{
+        else {
           msg.likeCount += 1
 
-          if(!msg.likes){
+          if (!msg.likes) {
             msg.likes = {}
           }
 
@@ -77,7 +77,7 @@ const ChatMessages = () => {
   }
 
   const handleDelete = async (msgId, file) => {
-    if( !window.confirm("Do you want to delete this message")){
+    if (!window.confirm("Do you want to delete this message")) {
       return
     }
 
@@ -87,40 +87,60 @@ const ChatMessages = () => {
 
     updates[`/messages/${msgId}`] = null
 
-    if(isLast && messages.length > 1){
+    if (isLast && messages.length > 1) {
       updates[`/rooms/${chatId}/lastMessage`] = {
         ...messages[messages.length - 2],
         messageId: messages[messages.length - 2].id
       }
     }
 
-    if(isLast && messages.length === 1){
+    if (isLast && messages.length === 1) {
       updates[`/rooms/${chatId}/lastMessage`] = null
     }
 
-    try{
+    try {
       await update(ref(database), updates)
     }
-    catch (err){
+    catch (err) {
       toast.error(err.message);
-      return 
+      return
     }
 
-    if(file){
-      try{
+    if (file) {
+      try {
         await deleteObject(storeRef(storage, `/chat/${chatId}/${file.name}`))
       }
-      catch(err){
+      catch (err) {
         toast.error(err.message)
       }
     }
   }
 
+  const renderMessages = () => {
+    const groups = groupBy(messages, item => new Date(item.createdAt).toDateString())
+
+    const items = []
+
+    Object.keys(groups).forEach(date => {
+      items.push(
+        <li key={date} className="text-center mt-5">{date}</li>
+      )
+
+      const msg = groups[date].map(msg => (
+        <ChatItem key={msg.id} message={msg} handleAdmin={handleAdmin} handleLike={handleLike} handleDelete={handleDelete} />
+      ))
+
+      items.push(...msg)
+    })
+
+    return items
+
+  }
+
   return (
     <ul className="msg-list custom-scroll">
       {isChatEmpty && <li>No messages yet</li>}
-      {canShowMessages && 
-        messages.map(msg => <ChatItem key={msg.id} message={msg} handleAdmin={handleAdmin} handleLike={handleLike} handleDelete={handleDelete}/>)
+      {canShowMessages && renderMessages()
       }
     </ul>
   )
