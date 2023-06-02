@@ -42,7 +42,7 @@ const ChatItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
     const admins = useCurrentRoom(v => v.admins)
 
     const isMsgAuthorAdmin = admins.includes(author.uid)
-    const isAuthor = auth.currentUser.uid === author.uid
+    const isAuthor = auth.currentUser ? auth.currentUser.uid === author.uid : false
     const canGrantAdmin = isAdmin && !isAuthor
 
     const [childRef, isHovered] = useHover()
@@ -75,9 +75,10 @@ const ChatItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
                     <div className="d-flex justify-between">
                         <span style={{ wordBreak: "break-all" }}>{text}</span>
                         <div className="d-flex mlr-3">
-                        <IconBtnControl {...(isLiked) ? { color: "red" } : { appearance: "ghost", color: "red" }} isVisible iconName={<AiFillHeart />} badgeContent={likeCount} onClick={() => handleLike(message.id)} toolTipMsg={isLiked ? "Unlike" : "Like"} />
+                            <IconBtnControl {...(isLiked) ? { color: "red" } : { appearance: "ghost", color: "red" }} isVisible iconName={<AiFillHeart />} badgeContent={likeCount} onClick={() => handleLike(message.id)} toolTipMsg={isLiked ? "Unlike" : "Like"} />
 
-                        <IconBtnControl appearance="subtle" isVisible iconName={<AiFillDelete />} onClick={() => handleDelete(message.id)} toolTipMsg="Delete" />
+                            {isAuthor &&
+                                <IconBtnControl appearance="subtle" isVisible iconName={<AiFillDelete />} onClick={() => handleDelete(message.id)} toolTipMsg="Delete" />}
                         </div>
                     </div>
                     <span className="text-right">

@@ -3,20 +3,21 @@ import { Input, InputGroup } from "rsuite"
 import { AiOutlineSend } from "react-icons/ai"
 import { useState } from "react"
 import { useCallback } from "react";
-import { push, ref, serverTimestamp, update } from "firebase/database";
+import { push, ref, serverTimestamp, set, update } from "firebase/database";
 import { useParams } from "react-router";
 import { useProfile } from "../../context/ProfileContext";
 import { database } from "../../misc/firebase";
 import { toast } from "react-toastify";
+import AttachFileModal from "./AttachFileModal";
 
-function assembleMessage(profile, chatId){
+function assembleMessage(profile, chatId) {
   return {
     roomId: chatId,
-    author : {
+    author: {
       name: profile.name,
       uid: profile.uid,
       createdAt: profile.createdAt,
-      ...(profile.avatar ? {avatar: profile.avatar} : {})
+      ...(profile.avatar ? { avatar: profile.avatar } : {})
     },
     createdAt: serverTimestamp(),
     likeCount: 0
@@ -34,7 +35,7 @@ const ChatBottom = () => {
   }, []);
 
   const onSendClick = async () => {
-    if(input.trim() === ""){
+    if (input.trim() === "") {
       return
     }
 
@@ -52,31 +53,57 @@ const ChatBottom = () => {
     };
 
     setIsLoading(true);
-    try{
+    try {
       await update(ref(database), updates);
 
       setIsLoading(false);
       setInput("")
     }
-    catch(err){
+    catch (err) {
       setIsLoading(false);
       toast.error(err);
     }
   };
 
   const onKeyDown = (ev) => {
-    if(ev.keyCode === 13){
+    if (ev.keyCode === 13) {
       ev.preventDefault();
       onSendClick();
     }
   }
 
+  const afterUploadFilesToStorage = async (files) => {
+    setIsLoading(true);
+
+    // files.then((res)=>console.log(res))
+    const updates = {};
+
+    files.map(file => {
+      const msgData = assembleMessage(profile, chatId);
+      msgData.file = file;
+
+      const messageId = push(ref(database, "messages")).key;
+
+      updates[`/messages/${messageId}`] = msgData;
+    })
+
+    try{
+      await update(ref(database), updates)
+      setIsLoading(false)
+    }
+    catch(err){
+      setIsLoading(false)
+      toast.error(err.message)
+    }
+  }
+
   return (
-    <>   
+    <>
       <InputGroup onKeyDown={onKeyDown}>
-        <Input placeholder="Enter your message here..." value={input} onChange={onInputChange}/>
+        <AttachFileModal afterUploadFilesToStorage={afterUploadFilesToStorage} />
+        <Input placeholder="Enter your message here..." value={input} onChange={onInputChange} />
         <InputGroup.Button color="green" appearance="primary" onClick={onSendClick} disabled={isLoading}>
-            <Icon as={AiOutlineSend}/>
+          <Icon as={AiOutlineSend} />
         </InputGroup.Button>
       </InputGroup>
     </>

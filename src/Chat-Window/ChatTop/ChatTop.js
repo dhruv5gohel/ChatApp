@@ -40,7 +40,7 @@ const ChatTop = () => {
               <span style={{ fontSize: "1.5rem", fontWeight: "bolder", marginLeft: "10px" }}>{name}</span>
             </Button>
             {isAdmin &&
-            <Dropdown renderToggle={renderButton} placement="leftBottom">
+            <Dropdown renderToggle={renderButton} placement="leftEnd">
               <Dropdown.Item onClick={()=>setEditIsOpen(p => !p)}>Edit Room</Dropdown.Item>
             </Dropdown>
             }
