@@ -102,7 +102,7 @@ const ChatItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
                             <IconBtnControl {...(isLiked) ? { color: "red" } : { appearance: "ghost", color: "red" }} isVisible iconName={<AiFillHeart />} badgeContent={likeCount} onClick={() => handleLike(message.id)} toolTipMsg={isLiked ? "Unlike" : "Like"} />
 
                             {isAuthor &&
-                                <IconBtnControl appearance="subtle" isVisible iconName={<AiFillDelete />} onClick={() => handleDelete(message.id)} toolTipMsg="Delete" />}
+                                <IconBtnControl appearance="subtle" isVisible iconName={<AiFillDelete />} onClick={() => handleDelete(message.id, file)} toolTipMsg="Delete" />}
                         </div>
                     </div>
                     <span className="text-right">

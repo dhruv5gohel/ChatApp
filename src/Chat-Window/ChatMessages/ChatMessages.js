@@ -2,10 +2,11 @@ import { equalTo, off, onValue, orderByChild, query, ref, runTransaction, update
 import { useEffect } from "react";
 import { useState } from "react"
 import { useParams } from "react-router";
-import { auth, database } from "../../misc/firebase";
+import { auth, database, storage } from "../../misc/firebase";
 import { transformToArray } from "../../misc/helpers";
 import ChatItem from "./ChatItem";
 import { toast } from "react-toastify";
+import { deleteObject, ref as storeRef } from "firebase/storage";
 
 const ChatMessages = () => {
   const [messages, setMessages] = useState(null);
@@ -75,7 +76,7 @@ const ChatMessages = () => {
 
   }
 
-  const handleDelete = async (msgId) => {
+  const handleDelete = async (msgId, file) => {
     if( !window.confirm("Do you want to delete this message")){
       return
     }
@@ -102,6 +103,16 @@ const ChatMessages = () => {
     }
     catch (err){
       toast.error(err.message);
+      return 
+    }
+
+    if(file){
+      try{
+        await deleteObject(storeRef(storage, `/chat/${chatId}/${file.name}`))
+      }
+      catch(err){
+        toast.error(err.message)
+      }
     }
   }
 
