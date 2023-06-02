@@ -1,5 +1,5 @@
-import { equalTo, off, onValue, orderByChild, query, ref, runTransaction, update } from "firebase/database";
-import { useEffect } from "react";
+import { equalTo, limitToLast, off, onValue, orderByChild, query, ref, runTransaction, update } from "firebase/database";
+import { useCallback, useEffect, useRef } from "react";
 import { useState } from "react"
 import { useParams } from "react-router";
 import { auth, database, storage } from "../../misc/firebase";
@@ -7,27 +7,70 @@ import { groupBy, transformToArray } from "../../misc/helpers";
 import ChatItem from "./ChatItem";
 import { toast } from "react-toastify";
 import { deleteObject, ref as storeRef } from "firebase/storage";
+import { Button } from "rsuite";
+
+const PAGE_SIZE = 20;
+const msgRef = ref(database, "/messages");
+
+function shouldScrollBottom(node, threshold = 40){
+  const percentage = ((100 * node.scrollTop) / (node.scrollHeight - node.clientHeight)) || 0;
+
+  return percentage > threshold;
+}
 
 const ChatMessages = () => {
   const [messages, setMessages] = useState(null);
   const { chatId } = useParams();
+  const [limit, setLimit] = useState(PAGE_SIZE);
+  const selfRef = useRef()
 
   const isChatEmpty = messages && messages.length === 0;
   const canShowMessages = messages && messages.length > 0;
-
-  useEffect(() => {
-    const msgRef = ref(database, "/messages")
-
-    onValue(query(msgRef, orderByChild("roomId"), equalTo(chatId)), snap => {
+  
+  const loadMessages = useCallback((lastLimit) => {
+    const node = selfRef.current
+    
+    off(msgRef);
+    
+    onValue(query(msgRef, orderByChild("roomId"), equalTo(chatId), limitToLast(lastLimit || PAGE_SIZE)), snap => {
       const data = transformToArray(snap.val());
 
       setMessages(data);
+      
+      if(shouldScrollBottom(node)){
+        node.scrollTop = node.scrollHeight
+      }
     })
+
+    setLimit(p => p + 10)
+  }, [chatId])
+
+  const onLoadMore = useCallback(() => {
+    const node = selfRef.current
+    const oldHeight = node.scrollHeight
+
+    
+    loadMessages(limit)
+    
+    setTimeout(()=>{
+      const newHeight = node.scrollHeight
+      node.scrollTop = newHeight - oldHeight
+    }, 350)
+  }, [loadMessages, limit])
+
+  useEffect(() => {
+    const node = selfRef.current
+    
+    loadMessages()
+    
+    setTimeout(()=>{
+      node.scrollTop = node.scrollHeight
+    }, 350)
 
     return () => {
       off(msgRef);
     }
-  }, [chatId]);
+  }, [loadMessages]);
 
   const handleAdmin = async (uid) => {
     const adminRef = ref(database, `/rooms/${chatId}/admins`);
@@ -138,10 +181,16 @@ const ChatMessages = () => {
   }
 
   return (
-    <ul className="msg-list custom-scroll">
+    <ul className="msg-list custom-scroll" ref={selfRef}>
+      {messages && messages.length >= PAGE_SIZE && (
+        <li className="mt-5 text-center">
+          <Button onClick={onLoadMore} color="blue" appearance="ghost">
+            Load More
+          </Button>
+        </li>
+      )}
       {isChatEmpty && <li>No messages yet</li>}
-      {canShowMessages && renderMessages()
-      }
+      {canShowMessages && renderMessages()}
     </ul>
   )
 }

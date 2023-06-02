@@ -33,7 +33,6 @@ export const usePresence = (uid) => {
             if(snap.exists()){
                 const data = snap.val();
                 setPresence(data);
-                console.log(data)
             }
         });
 

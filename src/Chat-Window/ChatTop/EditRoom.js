@@ -18,7 +18,6 @@ const EditRoom = ({ isOpen, setIsOpen }) => {
             toast.error(err.message)
         })
     }
-    console.log(isOpen)
 
     const onNameSave = (newName) => {
         updateData("name", newName)
