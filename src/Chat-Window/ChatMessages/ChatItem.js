@@ -51,7 +51,7 @@ const renderFileMessage = (file) => {
     }
 
     return (
-        <a href={file.url} target="_blank">Download file {file.name}</a>
+        <a href={file.url} target="_blank" rel="noreferrer">Download file {file.name}</a>
     )
 }
 
@@ -96,7 +96,7 @@ const ChatItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
                 </div>
                 <div className="d-flex flex-column justify-between msg-time-chat" style={{ width: `calc(100% - ${width}px - 15px)`, height: getHeight(childRef.current) > getHeight(parentRef.current) ? getHeight(childRef.current) : "", background: isHovered ? "#f6f6f6" : "" }} ref={childRef}>
                     <div className="d-flex justify-between">
-                        {text && <span style={{ wordBreak: "break-all" }}>{text}</span>}
+                        {text && <span style={{ wordBreak: "break-all", marginBottom: "20px" }}>{text}</span>}
                         {file && renderFileMessage(file)}
                         <div className="d-flex mlr-3">
                             <IconBtnControl {...(isLiked) ? { color: "red" } : { appearance: "ghost", color: "red" }} isVisible iconName={<AiFillHeart />} badgeContent={likeCount} onClick={() => handleLike(message.id)} toolTipMsg={isLiked ? "Unlike" : "Like"} />

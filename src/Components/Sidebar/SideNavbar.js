@@ -1,5 +1,4 @@
-import { Button, Sidenav, Nav, Divider } from "rsuite";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { Sidenav, Nav, Divider } from "rsuite";
 import { useState } from "react";
 import { AddOutline, Dashboard } from "@rsuite/icons";
 import ControlDrawer from "./ControlDrawer";
@@ -10,7 +9,6 @@ import { ref, set } from "firebase/database";
 import { isOfflineForDatabase } from "../../context/ProfileContext";
 
 const SideNavbar = () => {
-    const [expanded, setExpanded] = useState(true);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [openModal, setOpenModal] = useState(false);
 
@@ -31,9 +29,7 @@ const SideNavbar = () => {
 
     return (
         <div>
-            {/* <Button startIcon={<GiHamburgerMenu />} onClick={() => setExpanded((expanded) => !expanded)} /> */}
-
-            <Sidenav expanded={expanded}>
+            <Sidenav>
                 <Sidenav.Body>
                     <Nav className="hv-100">
                         <Nav.Item icon={<Dashboard />} onClick={handleDrawer} className="dashboard-btn">

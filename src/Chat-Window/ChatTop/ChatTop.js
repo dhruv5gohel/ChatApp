@@ -13,7 +13,7 @@ import EditRoom from "./EditRoom";
 
 const renderButton = (props, ref) => {
   return (
-    <Button {...props} ref={ref} color="red" appearance="primary" style={{ borderRadius: "0px", height: "100%" }}>
+    <Button {...props} ref={ref} color="violet" appearance="primary" style={{ borderRadius: "0px", height: "100%" }}>
       <Icon as={GoKebabVertical} />
     </Button>
   )
@@ -31,12 +31,12 @@ const ChatTop = () => {
       <div>
         <div className="d-flex" style={{ width: "100%" }}>
           <div className={!isMobile ? "d-flex" : "d-none"}>
-            <Button as={Link} to="/">
+            <Button as={Link} to="/" color="violet" appearance="primary" style={{borderRadius: 0}}>
               <Icon as={IoMdArrowRoundBack} />
             </Button>
           </div>
           <div style={{ width: "100%" }} className="d-flex">
-            <Button block style={{ width: "100%" }} className="chat-top-main" color="red" appearance="primary" startIcon={<RoomAvatar name={name} />} onClick={() => { setIsOpen(p => !p) }}>
+            <Button block style={{ width: "100%" }} className="chat-top-main" color="violet" appearance="primary" startIcon={<RoomAvatar name={name} />} onClick={() => { setIsOpen(p => !p) }}>
               <span style={{ fontSize: "1.5rem", fontWeight: "bolder", marginLeft: "10px" }}>{name}</span>
             </Button>
             {isAdmin &&
