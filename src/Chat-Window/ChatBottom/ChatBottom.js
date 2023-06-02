@@ -87,6 +87,13 @@ const ChatBottom = () => {
       updates[`/messages/${messageId}`] = msgData;
     })
 
+    const lastMsgId = Object.keys(updates).pop()
+
+    updates[`/rooms/${chatId}/lastMessage`] = {
+      ...updates[lastMsgId],
+      messageId: lastMsgId
+    }
+
     try{
       await update(ref(database), updates)
       setIsLoading(false)

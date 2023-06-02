@@ -12,7 +12,7 @@ const RoomItem = ({ room }) => {
       </div>
 
       <div>
-      {lastMessage ? 
+      {lastMessage ? lastMessage.file ? <span><b>{lastMessage.author.name.split(" ")[0]}:</b> sent an attachment</span> :
         <span><span style={{fontWeight: "bold"}}>{lastMessage.author.name.split(" ")[0]}: </span> {lastMessage.text} </span> : <span>No Messages...</span>
       }
 
