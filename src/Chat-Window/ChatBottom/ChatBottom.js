@@ -75,7 +75,6 @@ const ChatBottom = () => {
   const afterUploadFilesToStorage = async (files) => {
     setIsLoading(true);
 
-    // files.then((res)=>console.log(res))
     const updates = {};
 
     files.map(file => {

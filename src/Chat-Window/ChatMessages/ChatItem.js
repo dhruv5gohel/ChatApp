@@ -11,6 +11,7 @@ import { auth } from "../../misc/firebase";
 import { useHover } from "@uidotdev/usehooks";
 import IconBtnControl from "./IconBtnControl";
 import { AiFillHeart, AiFillDelete } from "react-icons/ai"
+import ImageBtnModal from "./ImageBtnModal";
 
 const getColor = (presence) => {
     if (!presence) {
@@ -32,8 +33,22 @@ const getText = (presence) => {
     return presence.state === "online" ? "Online" : `Last online ${new Date(presence.lastChanged).toLocaleDateString()}`
 }
 
+const renderFileMessage = (file) => {
+    if(file.contentType.includes("image")){
+        return (
+            <div style={{width: "40%"}}>
+                <ImageBtnModal src={file.url} fileName={file.name} />
+            </div>
+        )
+    }
+
+    return (
+        <a href={file.url}>Download file {file.name}</a>
+    )
+}
+
 const ChatItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
-    const { author, createdAt, text, likeCount, likes } = message;
+    const { author, createdAt, text, likeCount, likes, file } = message;
     const parentRef = useRef()
     const [width, setWidth] = useState(() => getWidth(parentRef.current));
     const presence = usePresence(author.uid)
@@ -57,7 +72,7 @@ const ChatItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
     return (
         <li className="p-10 mb-5">
             <div className="d-flex align-center mb-5 justify-between">
-                <div className="d-flex align-center flex-column" style={{ background: getColor(presence), padding: "3px 5px", borderRadius: "5px", height: getHeight(childRef.current) > getHeight(parentRef.current) ? `${getHeight(childRef.current)}px` : "auto" }} ref={parentRef}>
+                <div className="d-flex align-center flex-column" style={{ background: getColor(presence), padding: "3px 5px", borderRadius: "5px", }} ref={parentRef}>
                     <Whisper placement="bottom" controlId="control-id-hover" trigger="hover" speaker={<Tooltip>{getText(presence)}</Tooltip>}>
                         <span style={{ cursor: "pointer" }}>
                             <ProfileAvatar src={author.avatar} alt={author.name} />
@@ -71,9 +86,10 @@ const ChatItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
                         }
                     </ProfileModalBtn>
                 </div>
-                <div className="d-flex flex-column justify-between msg-time-chat" style={{ width: `calc(100% - ${width}px - 15px)`, height: getHeight(childRef.current) > getHeight(parentRef.current) ? "auto" : `${getHeight(parentRef.current)}px`, background: isHovered ? "#f6f6f6" : "" }} ref={childRef}>
+                <div className="d-flex flex-column justify-between msg-time-chat" style={{ width: `calc(100% - ${width}px - 15px)`, height: getHeight(childRef.current) > getHeight(parentRef.current) ? getHeight(childRef.current) : "", background: isHovered ? "#f6f6f6" : "" }} ref={childRef}>
                     <div className="d-flex justify-between">
-                        <span style={{ wordBreak: "break-all" }}>{text}</span>
+                        {text && <span style={{ wordBreak: "break-all" }}>{text}</span>}
+                        {file && renderFileMessage(file)}
                         <div className="d-flex mlr-3">
                             <IconBtnControl {...(isLiked) ? { color: "red" } : { appearance: "ghost", color: "red" }} isVisible iconName={<AiFillHeart />} badgeContent={likeCount} onClick={() => handleLike(message.id)} toolTipMsg={isLiked ? "Unlike" : "Like"} />
 
